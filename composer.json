@@ -1,0 +1,11 @@
+{
+    "name": "verners/project_dec-07",
+    "autoload": {
+    },
+    "authors": [
+        {
+            "name": "Verners"
+        }
+    ],
+    "require": {}
+}
