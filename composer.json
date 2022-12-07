@@ -1,0 +1,14 @@
+{
+    "name": "verners/project_dec-07",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Verners"
+        }
+    ],
+    "require": {}
+}
