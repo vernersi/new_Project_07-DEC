@@ -1,0 +1,21 @@
+nav {
+    background-color: #333;
+}
+
+/* Style the navbar links */
+nav{
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: inline-block;
+}
+
+/* Style the active link */
+nav.active {
+    background-color: #444;
+}
+
+/* Style the hover state of the links */
+nav:hover {
+    background-color: #555;
+}
