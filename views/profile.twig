@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bi-icons@1.1.2/dist/bi-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.1/mdb.min.css">
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css">
+    <title>{{ title }}</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-light" >
+    <div class="container-fluid" >
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item" >
+                    <a class="nav-link text-black hover:text-green-500" href="/home" ><i class="far fa-smile-beam fa-spin"></i>
+                        Welcome {{auth.name}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-black hover:text-green-500" href="/profile">Profile (<i class="fa-solid fa-money-check-dollar fa-flip" style="--fa-animation-duration: 3s;" ></i>{{ auth.balance }}$)</a>
+                </li>
+
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <p class="text-red-500 mt-2">{{ errors.userNotFound }}</p>
+                </li>
+                <li class="nav-item">
+                    <form class="form-inline my-2 my-lg-0" method="GET" action="/profile/viewUser">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Enter Friends Name" aria-label="Search" name="name">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-black hover:text-green-500" href="/logout"><i class="fas fa-sign-out-alt"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled">
+                        <script> document.write(new Date().toLocaleDateString()); </script>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/" rel="noopener" target="_blank"><span class="blue-text">Markets today</span></a> by TradingView</div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+        {
+            "symbols": [
+            {
+                "proName": "FOREXCOM:SPXUSD",
+                "title": "S&P 500"
+            },
+            {
+                "proName": "FOREXCOM:NSXUSD",
+                "title": "US 100"
+            },
+            {
+                "proName": "FX_IDC:EURUSD",
+                "title": "EUR/USD"
+            },
+            {
+                "proName": "BITSTAMP:BTCUSD",
+                "title": "Bitcoin"
+            },
+            {
+                "proName": "BITSTAMP:ETHUSD",
+                "title": "Ethereum"
+            }
+        ],
+            "showSymbolLogo": true,
+            "colorTheme": "light",
+            "isTransparent": false,
+            "displayMode": "adaptive",
+            "locale": "en"
+        }
+    </script>
+</div>
+<!-- TradingView Widget END -->
+<section>
+<p class="text-green-500 mt-2">{{ errors.successfulBuy }} {{ errors.successfulSell }} {{ errors.successfulTransfer }} {{ errors.successfulShort }}</p>
+<div class="flex flex-col items-start justify-start py-8 ali">
+    <img class="w-32 h-32 rounded-full object-cover" src="images/default_avatar.jpg" alt="Profile Picture">
+    <h1 class="text-3xl font-bold mt-4">Name: {{ auth.name }}</h1>
+    <p class="text-lg font-semibold mt-2">Username: {{ auth.username }}</p>
+<form class="w-full max-w-sm mx-auto mt-6"  action="/deposit" method="post">
+    <div class="flex items-start justify-start border-b border-teal-500 py-2">
+        <input class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="number" placeholder="Enter deposit amount $" id="depositAmount" name="deposit">
+        <button class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded" type="submit">
+            Deposit
+        </button>
+    </div> <p class="text-green-500 mt-2">{{ errors.successfulDeposit }}</p>
+</form>
+<form class="w-full max-w-sm mx-auto mt-6" action="/withdraw" method="post">
+    <div class="flex items-start justify-start  border-b border-teal-500 py-2">
+        <input class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="number" placeholder="Enter withdraw amount $" id="withdrawAmount" name="withdraw">
+        <button class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded" type="submit">
+            Withdraw
+        </button>
+    </div><p class="text-red-500 mt-2">{{ errors.notEnoughBalance }}</p>
+    <p class="text-green-500 mt-2">{{ errors.successfulWithdraw }}</p>
+</form>
+</div>
+</section>
+<aside>
+    <table>
+        <thead>
+        <tr>
+            <th>Stock Symbol</th>
+            <th>Amount</th>
+            <th>Total</th>
+            <th>Current Value</th>
+            <th>Profit</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for trades in  trades %}
+            <tr>
+                <td>{{ trades.stock_symbol }}</td>
+                <td>{{ trades.amount }}</td>
+                <td>{{ trades.total }} $</td>
+                <td>{{ trades.currentValue }} $</td>
+                <td>
+                    {% if trades.profit < 0 %}
+                        <a class="text-danger" href="/home/search?stock={{ trades.stock_symbol }}">{{trades.profit}} $ ({{ trades.profitPercentage }}%)<span class="bi bi-caret-down-fill"></span> </a>
+                    {% else %}
+                        <a class="text-success" href="/home/search?stock={{ trades.stock_symbol }}">+{{trades.profit}} $ (+{{ trades.profitPercentage }}%)<span class="bi bi-caret-up-fill"></span></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</aside>
+</body>
+</html>

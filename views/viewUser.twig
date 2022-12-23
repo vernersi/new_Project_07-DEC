@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ title }}</title>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-light" >
+    <div class="container-fluid" >
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item" >
+                    <a class="nav-link text-black hover:text-green-500" href="/home" ><i class="far fa-smile-beam fa-spin"></i>
+                        Welcome {{auth.name}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-black hover:text-green-500" href="/profile">Profile (<i class="fa-solid fa-money-check-dollar fa-flip" style="--fa-animation-duration: 3s;" ></i>{{ auth.balance }}$)</a>
+                </li>
+
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <p class="text-red-500 mt-2">{{ errors.userNotFound }}</p>
+                </li>
+                <li class="nav-item">
+                    <form class="form-inline my-2 my-lg-0" method="GET" action="/profile/viewUser">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Enter Friends Name" aria-label="Search" name="name">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-black hover:text-green-500" href="/logout"><i class="fas fa-sign-out-alt"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled">
+                        <script> document.write(new Date().toLocaleDateString()); </script>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<div class="h-full bg-gray-200 p-8">
+    <div class="bg-white rounded-lg shadow-xl pb-8">
+        <div x-data="{ openSettings: false }" class="absolute right-12 mt-4 rounded">
+            <button @click="openSettings = !openSettings" class="border border-gray-400 p-2 rounded text-gray-300 hover:text-gray-300 bg-gray-100 bg-opacity-10 hover:bg-opacity-20" title="Settings">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                </svg>
+            </button>
+            <div x-show="openSettings" @click.away="openSettings = false" class="bg-white absolute right-0 w-40 py-2 mt-1 border border-gray-200 shadow-2xl" style="display: none;">
+                <div class="py-2 border-b" >
+                    <p class="text-gray-400 text-xs px-6 uppercase mb-1">Report</p>
+                    <button class="w-full flex items-center px-6 py-1.5 space-x-2 hover:bg-gray-200" >                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                        </svg>
+                        <span class="text-sm text-gray-700">Share Profile</span>
+                    </button>
+                    <button class="w-full flex items-center py-1.5 px-6 space-x-2 hover:bg-gray-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
+                        </svg>
+                        <span class="text-sm text-gray-700">Block User</span>
+                    </button>
+                    <button class="w-full flex items-center py-1.5 px-6 space-x-2 hover:bg-gray-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-sm text-gray-700">More Info</span>
+                    </button>
+                </div>
+                <div class="py-2">
+                    <p class="text-gray-400 text-xs px-6 uppercase mb-1">Feedback</p>
+                    <button class="w-full flex items-center py-1.5 px-6 space-x-2 hover:bg-gray-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        <span class="text-sm text-gray-700">Report</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="w-full h-[250px]">
+            <img src="https://vojislavd.com/ta-template-demo/assets/img/profile-background.jpg" class="w-full h-full rounded-tl-lg rounded-tr-lg">
+        </div>
+        <div class="flex flex-col items-center -mt-20">
+            <img src="https://vojislavd.com/ta-template-demo/assets/img/profile.jpg" class="w-40 border-4 border-white rounded-full">
+            <div class="flex items-center space-x-2 mt-2">
+                <p class="text-2xl">{{ user.name }}</p>
+                <span class="bg-blue-500 rounded-full p-1" title="Verified">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="text-gray-100 h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </span>
+            </div>
+            <p class="text-gray-700">Stock King, pump and dump</p>
+            <p class="text-sm text-gray-500">New York, USA</p>
+        </div>
+        <section>
+            <div class="flex-1 flex flex-row items-start lg:items-end justify-self-auto px-8 mt-2">
+                <div class="flex items-center space-x-4 mt-2">
+                    <button class="flex items-start bg-blue-600 hover:bg-blue-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100" type="button" onclick="window.location.href='/profile'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path>
+                        </svg>
+                        <span>Back to my Profile</span>
+                    </button>
+                    <form action="/profile/viewUser" method="post" class="border p-4 rounded-md">
+                        <input type="hidden" name="userName" value="{{ user.name }}">
+                        <input type="hidden" name="userId" value="{{ user.id }}">
+                        <div class="mb-4">
+                            <p class="text-red-500 mt-2">{{ errors.notEnoughStocks }}</p>
+                            <label for="stockName" class="block text-gray-700 text-sm font-bold mb-2">Stock Name:</label>
+                            <input type="text" id="stockName" name="stockName" class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-red-500 mt-2">{{ errors.invalidQuantity }}</p>
+                            <label for="quantity" class="block text-gray-700 text-sm font-bold mb-2">Quantity:</label>
+                            <input type="number" id="quantity" name="quantity" class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                        <div class="flex items-center justify-end">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                Send Shares
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="my-4 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4">
+        <div class="w-full flex flex-col 2xl:w-1/3">
+            <div class="flex-1 bg-white rounded-lg shadow-xl p-8">
+                <h4 class="text-xl text-gray-900 font-bold">Personal Info</h4>
+                <ul class="mt-2 text-gray-700">
+                    <li class="flex border-y py-2">
+                        <span class="font-bold w-24">Full name:</span>
+                        <span class="text-gray-700">{{ user.name }}</span>
+                    </li>
+                    <li class="flex border-b py-2">
+                        <span class="font-bold w-24">Email:</span>
+                        <span class="text-gray-700">{{ user.email }}</span>
+                    </li>
+                    <li class="flex border-b py-2">
+                        <span class="font-bold w-24">Languages:</span>
+                        <span class="text-gray-700">English, Spanish</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
+                <h4 class="text-xl text-gray-900 font-bold">Activity log</h4>
+                <div class="relative px-4">
+                    <div class="absolute h-full border border-dashed border-opacity-20 border-secondary"></div>
+
+                    <!-- start::Timeline item -->
+                    <div class="flex items-center w-full my-6 -ml-1.5">
+                        <div class="w-1/12 z-10">
+                            <div class="w-3.5 h-3.5 bg-blue-600 rounded-full"></div>
+                        </div>
+                        <div class="w-11/12">
+                            <p class="text-sm">Bought 10 TSLA shares.</p>
+                            <p class="text-xs text-gray-500">15 min ago</p>
+                        </div>
+                    </div>
+                    <!-- start::Timeline item -->
+                    <div class="flex items-center w-full my-6 -ml-1.5">
+                        <div class="w-1/12 z-10">
+                            <div class="w-3.5 h-3.5 bg-blue-600 rounded-full"></div>
+                        </div>
+                        <div class="w-11/12">
+                            <p class="text-sm">
+                                Transfered 30 TSLA shares to <a href="/profile/viewUser?name=Elon" class="text-blue-600 font-bold"> Elon</a>.</p>
+                            <p class="text-xs text-gray-500">51 min ago</p>
+                        </div>
+                    </div>
+                    <!-- end::Timeline item -->
+
+                    <!-- start::Timeline item -->
+                    <div class="flex items-center w-full my-6 -ml-1.5">
+                        <div class="w-1/12 z-10">
+                            <div class="w-3.5 h-3.5 bg-blue-600 rounded-full"></div>
+                        </div>
+                        <div class="w-11/12">
+                            <p class="text-sm">Sold 5 MSFT shares.</p>
+                            <p class="text-xs text-gray-500">18 hrs ago</p>
+                        </div>
+                    </div>
+                    <!-- end::Timeline item -->
+                </div>
+</div>
+        </div> </div>
+    </div>
+</body>
+</html>

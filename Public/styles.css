@@ -1,0 +1,62 @@
+nav {
+    background-color: #333;
+}
+
+/* Style the navbar links */
+nav{
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: inline-block;
+}
+
+/* Style the active link */
+nav.active {
+    background-color: #444;
+}
+
+/* Style the hover state of the links */
+nav:hover {
+    background-color: #555;
+}
+ .profile-container {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     padding: 20px;
+ }
+
+.profile-container img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.profile-container h1 {
+    margin-bottom: 10px;
+}
+
+.profile-container p {
+    margin: 0;
+}
+ table {
+     border-collapse: collapse;
+     width: 100%;
+ }
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+    background-color: #4caf50;
+    color: white;
+}
+.border-gray-300 {
+    border: 1px solid slategray;
+}
